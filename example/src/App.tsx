@@ -1,14 +1,26 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
 
-import { StyleSheet, View, Text } from 'react-native';
-import { multiply } from 'react-native-in-app-push';
+import { StyleSheet, View, Text, NativeModules } from 'react-native';
 
 export default function App() {
   const [result, setResult] = React.useState<number | undefined>();
+  const { InAppPush } = NativeModules;
 
-  React.useEffect(() => {
-    multiply(3, 7).then(setResult);
-  }, []);
+  useEffect(() => {
+    console.log('InAppPush', NativeModules);
+    InAppPush.multiply(4, 4)
+      .then((rs) => {
+        console.log('RS', rs);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    InAppPush.showNotification(
+      'Rewards',
+      'Deal Expiring Soon',
+      'Check before it expires'
+    );
+  });
 
   return (
     <View style={styles.container}>
@@ -29,3 +41,29 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
 });
+
+/**
+ * import React, {useEffect} from 'react';
+import {NativeModules, Text} from 'react-native';
+
+const {InAppPush} = NativeModules;
+
+const nativeF = () => {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  useEffect(() => {
+    console.log('InAppPush', NativeModules);
+    InAppPush.multiply(3, 4)
+      .then(rs => {
+        console.log('RS', rs);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  });
+
+  return <Text>HI</Text>;
+};
+
+export default nativeF;
+
+ */

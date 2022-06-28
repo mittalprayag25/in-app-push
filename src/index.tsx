@@ -17,6 +17,10 @@ const InAppPush = NativeModules.InAppPush
       }
     );
 
-export function multiply(a: number, b: number): Promise<number> {
+const multiply = (a: number, b: number): Promise<number> => {
   return InAppPush.multiply(a, b);
-}
+};
+
+export default {
+  multiply,
+};
